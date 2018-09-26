@@ -208,7 +208,38 @@ void LevelOrder(AVLTree T) {
 
 
 
-void Delete(){
+//删除
+void Delete(AVLTree &T, int key){
+
+	if (!T)
+		return;
+
+	if (key < T->data) {
+		Delete(T->left, key);
+
+		if (Height(T->right) - Height(T->left) == 2) {//不平衡点在左边
+			if (Height(T->left->right) > Height(T->left->left)) {
+				SingleRotationRight(T->left);
+			}
+			SingleRotationLeft(T);
+		}
+	}
+	else if (key > T->data) {
+		Delete(T->right, key);
+		if (Height(T->left) - Height(T->right) == 2) {
+			if (Height(T->right->left) > Height(T->right->right)) {
+				SingleRotationLeft(T->right);
+			}
+			SingleRotationRight(T);
+		}
+	}
+
+	T->height = max(Height(T->left), Height(T->right)) + 1;
+
+
+
+
+
 
 
 }
