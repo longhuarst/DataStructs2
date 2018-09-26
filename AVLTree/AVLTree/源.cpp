@@ -12,41 +12,7 @@ typedef struct AVLTreeNode{
 	int height;
 }AVLTreeNode,*AVLTree;
 
-
-//×óÐý
-void RotationLeft(AVLTree &T)
-{
-	AVLTree p = T;
-	T = p->right;
-	p->right = T->left;
-	T->left = p;
-	T->left->height = Heigth(T->left);
-	T->height = Heigth(T);
-}
-
-//ÓÒÐý
-void RotationRight(AVLTree &T) {
-	AVLTree p = T;
-	T = p->left;
-	p->left = T->right;
-	T->right = p;
-	T->right->height = Heigth(T->right);
-	T->height = Heigth(T);
-}
-
-//×óÓÒÐý×ª
-void RotationLeftRight(AVLTree &T) {
-	RotationLeft(T->left);
-	RotationRight(T);
-}
-
-//ÓÒ×óÐý×ª
-void RotationRightLeft(AVLTree &T) {
-	RotationRight(T->right);
-	RotationLeft(T);
-}
-
-int Heigth(AVLTree T)
+int Height(AVLTree T)
 {
 	if (T->left == NULL && T->right == NULL)
 		return -1;
@@ -54,8 +20,42 @@ int Heigth(AVLTree T)
 		return T->right->height + 1;
 	if (T->right == NULL)
 		return T->left->height + 1;
-	return T->left->height>T->right->height?T->left->height:T->right->height + 1;
+	return T->left->height > T->right->height ? T->left->height : T->right->height + 1;
 }
+
+//×óµ¥Ðý×ª(×ó×óÐý×ª/LLÐý×ª)
+void SingleRotationLeft(AVLTree &T)
+{
+	AVLTree p = T;
+	T = p->left;
+	p->left = T->right;
+	T->right = p;
+	T->right->height = Height(T->right);
+	T->height = Height(T);
+}
+
+//ÓÒµ¥Ðý×ª£¨ÓÒÓÒÐý×ª/RRÐý×ª£©
+void SingleRotationRight(AVLTree &T) {
+	AVLTree p = T;
+	T = p->right;
+	p->right = T->left;
+	T->left = p;
+	T->left->height = Height(T->left);
+	T->height = Height(T);
+}
+
+//×óÓÒÐý×ª(LRÐý×ª)
+void DoubleRotationLeft(AVLTree &T) {
+	SingleRotationRight(T->left);
+	SingleRotationLeft(T);
+}
+
+//ÓÒ×óÐý×ª(RLÐý×ª)
+void DoubleRotationRight(AVLTree &T) {
+	SingleRotationLeft(T->right);
+	SingleRotationRight(T);
+}
+
 
 void insert(AVLTree &T, int key) 
 {
@@ -70,33 +70,33 @@ void insert(AVLTree &T, int key)
 		if (key < T->data) {
 			insert(T->left, key);
 			//ÖØÐÂ¼ÆËã¸ß¶È
-			if ((T->height = Heigth(T)) == 2) {
+			if ((T->height = Height(T)) == 2) {
 				//Æ½ºâ±»ÆÆ»µ
 				if (key < T->right->data) {
-					//ÓÒÓÒÐý
-					RotationRight(T);
+					//×ó×óÐý
+					SingleRotationLeft(T);
 				}
 				else if (key > T->left->data) {
 					//×óÓÒÐý
-					RotationLeftRight(T);
+					DoubleRotationLeft(T);
 				}
-				T->height = Heigth(T);
+				T->height = Height(T);
 			}
 		}
 		else if (key > T->data) {
 			insert(T->right, key);
 			//ÖØÐÂ¼ÆËã¸ß¶È
-			if ((T->height = Heigth(T)) == 2) {
+			if ((T->height = Height(T)) == 2) {
 				//Æ½ºâ±»ÆÆ»µ
 				if (key > T->right->data) {
-					//×ó×óÐý
-					RotationLeft(T);
+					//ÓÒÓÒÐý
+					SingleRotationRight(T);
 				}
 				else if (key < T->left->data) {
 					//ÓÒ×óÐý
-					RotationRightLeft(T);
+					DoubleRotationRight(T);
 				}
-				T->height = Heigth(T);
+				T->height = Height(T);
 			}
 		}
 		else {
