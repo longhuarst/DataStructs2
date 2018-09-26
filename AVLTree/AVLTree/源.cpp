@@ -291,7 +291,27 @@ AVLTree Delete(AVLTree &T, int key){
 
 
 
+void search(AVLTree T, int key) {
 
+	if (!T) {
+		cout << "没找到！" << endl;
+		return;
+	}
+
+	if (T->data == key) {
+		cout << "找到了！" << endl;
+	}
+	else if (key < T->data) {
+		search(T->left, key);
+	}
+	else if (key > T->data) {
+		search(T->right, key);
+	}
+
+
+
+
+}
 
 
 
@@ -323,6 +343,11 @@ int main()
 
 	LevelOrder(T);
 
+	cout << endl;
+
+	search(T,4);
+
+	search(T,5);
 
 	system("pause");
 
