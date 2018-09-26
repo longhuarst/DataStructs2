@@ -205,17 +205,60 @@ void LevelOrder(AVLTree T) {
 }
 
 
+AVLTree findmax(AVLTree T) {
+
+	if (!T)
+		return NULL;
+
+	while (T->right) {
+		T = T->right;
+	}
+
+	return T;
+
+}
 
 
 
 //删除
-void Delete(AVLTree &T, int key){
+AVLTree Delete(AVLTree &T, int key){
 
 	if (!T)
-		return;
+		return NULL;
+
+	if (key == T->data) {
+		AVLTree p = T;
+
+		if (T->left == NULL && T->right == NULL) { //叶子节点
+			delete T; //直接删除
+			return NULL;
+		}
+		else if (T->left == NULL) {
+			T = T->right;
+			delete p;
+			return T; 
+		}
+		else if (T->right == NULL) {
+			T = T->left;
+			delete p;
+			return T;
+		}
+		else {
+			p = findmax(p->left);//找到左子树中的最大值
+			T->data = p->data;
+			if (T->data == T->left->data)
+				T->left = NULL;
+			else
+				Delete(T->left, T->data);//删除最大值
+			return T;
+		}
+
+		
+	}
+
 
 	if (key < T->data) {
-		Delete(T->left, key);
+		T->left = Delete(T->left, key);
 
 		if (Height(T->right) - Height(T->left) == 2) {//不平衡点在左边
 			if (Height(T->left->right) > Height(T->left->left)) {
@@ -225,7 +268,7 @@ void Delete(AVLTree &T, int key){
 		}
 	}
 	else if (key > T->data) {
-		Delete(T->right, key);
+		T->right = Delete(T->right, key);
 		if (Height(T->left) - Height(T->right) == 2) {
 			if (Height(T->right->left) > Height(T->right->right)) {
 				SingleRotationLeft(T->right);
@@ -237,7 +280,7 @@ void Delete(AVLTree &T, int key){
 	T->height = max(Height(T->left), Height(T->right)) + 1;
 
 
-
+	return T;
 
 
 
@@ -266,6 +309,16 @@ int main()
 		insert(T, i);
 	}
 
+
+
+	LevelOrder(T);
+
+
+
+
+	cout << endl << "";
+
+	Delete(T,5);
 
 
 	LevelOrder(T);
