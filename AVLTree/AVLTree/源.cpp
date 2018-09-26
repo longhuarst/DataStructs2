@@ -5,8 +5,6 @@
 using namespace std;
 
 
-
-
 //¶ş²æÆ½ºâÊ÷
 typedef struct AVLTreeNode{
 	int data;
