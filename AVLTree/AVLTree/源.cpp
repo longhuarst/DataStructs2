@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
+#include <queue>
+
 
 using namespace std;
 
@@ -16,16 +18,28 @@ typedef struct AVLTreeNode{
 	int height;
 }AVLTreeNode,*AVLTree;
 
+
+
+
+
+
+
+
+
 int Height(AVLTree T)
 {
-	if (T->left == NULL && T->right == NULL)
+	if (!T)
 		return -1;
-	if (T->left == NULL)
-		return T->right->height + 1;
-	if (T->right == NULL)
-		return T->left->height + 1;
-	return T->left->height > T->right->height ? T->left->height : T->right->height + 1;
+	else return T->height;
 }
+
+
+
+
+
+
+
+
 
 //左单旋转(左左旋转/LL旋转)
 void SingleRotationLeft(AVLTree &T)
@@ -34,9 +48,16 @@ void SingleRotationLeft(AVLTree &T)
 	T = p->left;
 	p->left = T->right;
 	T->right = p;
-	T->right->height = Height(T->right);
-	T->height = Height(T);
+	T->right->height = max(Height(T->right->left),Height(T->right->right)) + 1;
+	T->height = max(Height(T->left),Height(T->right)) + 1;
 }
+
+
+
+
+
+
+
 
 //右单旋转（右右旋转/RR旋转）
 void SingleRotationRight(AVLTree &T) {
@@ -44,9 +65,15 @@ void SingleRotationRight(AVLTree &T) {
 	T = p->right;
 	p->right = T->left;
 	T->left = p;
-	T->left->height = Height(T->left);
-	T->height = Height(T);
+	T->left->height = max(Height(T->left->left), Height(T->left->right)) + 1;
+	T->height = max(Height(T->left), Height(T->right)) + 1;
 }
+
+
+
+
+
+
 
 //左右旋转(LR旋转)
 void DoubleRotationLeft(AVLTree &T) {
@@ -54,11 +81,22 @@ void DoubleRotationLeft(AVLTree &T) {
 	SingleRotationLeft(T);
 }
 
+
+
+
+
+
+
 //右左旋转(RL旋转)
 void DoubleRotationRight(AVLTree &T) {
 	SingleRotationLeft(T->right);
 	SingleRotationRight(T);
 }
+
+
+
+
+
 
 
 void insert(AVLTree &T, int key) 
@@ -74,7 +112,7 @@ void insert(AVLTree &T, int key)
 		if (key < T->data) {
 			insert(T->left, key);
 			//重新计算高度
-			if ((T->height = Height(T)) == 2) {
+			if ((Height(T->left) - Height(T->right)) == 2) {
 				//平衡被破坏
 				if (key < T->right->data) {
 					//左左旋
@@ -84,13 +122,12 @@ void insert(AVLTree &T, int key)
 					//左右旋
 					DoubleRotationLeft(T);
 				}
-				T->height = Height(T);
 			}
 		}
 		else if (key > T->data) {
 			insert(T->right, key);
 			//重新计算高度
-			if ((T->height = Height(T)) == 2) {
+			if (Height(T->right) - Height(T->left) == 2) {
 				//平衡被破坏
 				if (key > T->right->data) {
 					//右右旋
@@ -100,17 +137,110 @@ void insert(AVLTree &T, int key)
 					//右左旋
 					DoubleRotationRight(T);
 				}
-				T->height = Height(T);
 			}
 		}
 		else {
 			cout << "插入了已存在的值!" << endl;
 			exit(-1);
 		}
+
+		T->height = max(Height(T->left), Height(T->right)) + 1;
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+void Visit(AVLTree T) {
+
+	if (!T) {
+		std::cout << "X ";
+	}else
+		std::cout << T->data <<" ";
+}
+
+
+
+
+
+
+
+
+
+
+//层次遍历
+void LevelOrder(AVLTree T) {
+
+
+	queue<AVLTree> Q;
+
+	if (!T)
+		return;
+
+	Q.push(T);
+
+
+	while (!Q.empty()) {
+
+		Visit(Q.front());
+
+		if (Q.front()->left) Q.push(Q.front()->left);
+		if (Q.front()->right) Q.push(Q.front()->right);
+
+		Q.pop();
+
+
+	}
+
+
+
+}
+
+
+
+
+
+void Delete(){
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main()
 {
+
+
+	AVLTree T = NULL;
+
+	for (int i = 0; i < 20; ++i) {
+		insert(T, i);
+	}
+
+
+
+	LevelOrder(T);
+
+
+	system("pause");
+
 
 }
