@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALTree2", "ALTree2\ALTree2.vcxproj", "{D7201E3E-71F1-4771-8063-A0BE60A7452A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Debug|x64.ActiveCfg = Debug|x64
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Debug|x64.Build.0 = Debug|x64
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Debug|x86.Build.0 = Debug|Win32
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Release|x64.ActiveCfg = Release|x64
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Release|x64.Build.0 = Release|x64
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Release|x86.ActiveCfg = Release|Win32
+		{D7201E3E-71F1-4771-8063-A0BE60A7452A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {85C33AA1-5DCE-4C31-BC05-750D42FF356A}
+	EndGlobalSection
+EndGlobal

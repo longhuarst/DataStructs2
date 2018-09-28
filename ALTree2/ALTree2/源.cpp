@@ -1,29 +1,44 @@
 #include <iostream>
 
 
-
 using namespace std;
 
 
-#define MaxVexNum 100
+//аз╫с╠М
 
-typedef struct ArcNode
-{
+#define MaxVertexNum (100)
+typedef int VertexType;
+
+typedef struct ArcNode{
 	int adjvex;
 	struct ArcNode *next;
 }ArcNode;
 
-
 typedef struct VNode{
-	int data;
+	VertexType data;
 	ArcNode *first;
-}Vnode,AdjList[MaxVexNum];
+}VNode,AdjList[MaxVertexNum];
 
 
 typedef struct {
 	AdjList vertices;
 	int vexnum, arcnum;
 }ALGraph;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -39,32 +54,6 @@ int main()
 
 
 
-
-
-
-
-
-
 	system("pause");
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
