@@ -124,8 +124,19 @@ void BFSTraverse(ALGraph G)
 
 
 
+bool dfs_visited[MaxVertexNum] = {false};
 
+void DFS(ALGraph G, int v)
+{
+	visit(G, v);
+	dfs_visited[v] = true;
 
+	for (int i = FirstNeighbor(G, v); i >= 0; i = NextNeighbor(G, v, i)) {
+		if (!dfs_visited[i]) {
+			DFS(G, i);
+		}
+	}
+}
 
 
 
@@ -212,6 +223,14 @@ int main()
 	BFS(G, 1);
 
 
+
+
+
+	cout << "----------" << endl;
+	for (int i = 0; i < G.vexnum; ++i) {
+		dfs_visited[i] = false;
+	}
+	DFS(G, 0);
 	//cout << "xxxxxx" << endl;
 
 
