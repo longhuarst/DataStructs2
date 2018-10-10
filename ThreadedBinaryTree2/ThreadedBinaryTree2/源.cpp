@@ -115,6 +115,8 @@ void BuildTree(ThreadedBinaryTree &root,int max)
 		if (counter >= max) return;
 		prev->rchild = NewNode(++counter);
 
+		prev->lchild->parent = prev;
+		prev->rchild->parent = prev;
 
 		Q.push(prev->lchild);
 		Q.push(prev->rchild);
@@ -254,14 +256,52 @@ void ThreadedInOrder(ThreadedBinaryTree root)
 
 //后序线索化
 
-void PostThreaded(ThreadedBinaryTree root)
+void PostThreaded(ThreadedBinaryTree root, ThreadedBinaryTree &prev)
 {
+	if (root) {
+		PostThreaded(root->lchild, prev);
+		PostThreaded(root->rchild, prev);
 
+		if (root->lchild == NULL) {
+			root->lchild = prev;
+			root->ltag = 1;
+		}
+		if (prev != NULL && prev->rchild == NULL) {
+			prev->rchild = root;
+			prev->rtag = 1;
+		}
+
+		prev = root;
+	}
 }
 
 
 
+void CreatePostThreadedTree(ThreadedBinaryTree root)
+{
+	ThreadedBinaryTree prev = NULL;
 
+	if (root) {
+		PostThreaded(root,prev);
+	}
+}
+
+
+
+void ThreadedPostOrder(ThreadedBinaryTree root)
+{
+	while (root) {
+		while (root->ltag == 0) root = root->lchild;
+		visit(root);
+		
+		if (root != NULL && root->rtag == 0) {
+			root = root->parent->rchild;
+		}
+		else {
+			root = root->rchild;
+		}
+	}
+}
 
 
 
@@ -345,6 +385,35 @@ int main()
 
 	cout << "中序线索二叉树 中序遍历：";
 	ThreadedInOrder(InTree); cout << endl;
+
+
+
+
+
+
+
+
+
+	cout << "======================后序遍历======================" << endl;
+
+	cout << "构造树" << endl;
+
+	BuildTree(PostTree, 7);
+
+
+	cout << "层次遍历树 : ";
+	LevelOrder(PostTree); cout << endl;
+
+	cout << "后遍历树 ：";
+	PostOrder(PostTree); cout << endl;
+
+	cout << "二叉树 后序遍历 线索化";
+	CreatePostThreadedTree(PostTree); cout << endl;
+
+	cout << "中序线索二叉树 后序遍历：";
+	ThreadedPostOrder(PostTree); cout << endl;
+
+
 
 
 
