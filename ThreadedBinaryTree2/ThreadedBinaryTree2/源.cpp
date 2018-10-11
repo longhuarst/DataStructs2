@@ -79,6 +79,7 @@ ThreadedBinaryTree NewNode(int data)
 	p->data = data;
 	p->lchild = NULL;
 	p->rchild = NULL;
+	p->parent = NULL;
 	p->ltag = 0;
 	p->rtag = 0;
 
@@ -290,15 +291,27 @@ void CreatePostThreadedTree(ThreadedBinaryTree root)
 
 void ThreadedPostOrder(ThreadedBinaryTree root)
 {
+	bool bk_ = false;
 	while (root) {
-		while (root->ltag == 0) root = root->lchild;
+		while (root->ltag == 0 && bk_ == false) root = root->lchild;
 		visit(root);
-		
-		if (root != NULL && root->rtag == 0) {
+		bk_ = false;
+		if (root->rtag == 0) {
+			ThreadedBinaryTree p = root;
+
+			if (root->parent == NULL)
+				return;
+
 			root = root->parent->rchild;
+
+			if (root == NULL || root == p) {
+				root = p->parent;
+				bk_ = true;
+			}
 		}
 		else {
 			root = root->rchild;
+			bk_ = true;
 		}
 	}
 }
